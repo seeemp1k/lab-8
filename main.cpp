@@ -1,39 +1,57 @@
 #include <iostream>
-using namespace std;
 
-int gcd(int a, int b) {
-    return b ? gcd(b, a % b) : a;
-}
-
-int znamenatel(int q) {
-    while (((q - 5) % 7) != 0) {
-        q -= 1;
+int algevk(int a, int b) {
+    if (a == 0) {
+        return b;
     }
-    return q;
+    if (b == 0) {
+        return a;
+    }
+    if (a >= b) {
+        return algevk(a % b, b);
+    }
+    if (a <= b) {
+        return algevk(a, b % a);
+    }
 }
 
-void schet(int n)
-{
-    int dr[2];
-    double max_el = 0;
-    int q = 0;
-    for (double i = 2; i < n; i += 3)
-    {
-        double j = znamenatel(n);
-        if ((gcd(i, j) == 1) && ((i / j) < ((double)3 / (double)7)) && (max_el < (i / j)))
-        {
-            max_el = i / j;
-            dr[0] = i;
-            dr[1] = j;
+bool proove_common_fraction(int n, int k){
+    if (algevk(n, k) ==1){
+        return true;
+    }
+    else{
+        return true;
+    }
+
+}
+
+void nearby_common_fraction(int n){
+    double base = 3.0 / 7.0;
+    int p, q;
+    int a;
+    double del;
+    double near = 0, min_near = 0;
+    for (int i = 2; i < n; i++) {
+        del = base * i;
+        a = int(del);
+        double b = a;
+        near = b / i;
+        if (near >= base) {
+            continue;
         }
-
+        else if (base - near < base - min_near && near <= base && proove_common_fraction(a, i) == true) {
+            min_near = near;
+            p = a;
+            q = i;
+        }
     }
-    cout << dr[0] << "/" << dr[1] << endl;
+
+    std::cout << p <<"/" << q <<  std::endl;
+
 }
 
-int main()
-{
-    int n = 1000000;//можно ввести почти любой знаменатель (100 000 000 считает за 8 сек)
-    schet(n);
+int main() {
+    nearby_common_fraction(8);
+    nearby_common_fraction(1000000);
     return 0;
 }
